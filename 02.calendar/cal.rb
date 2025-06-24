@@ -7,8 +7,8 @@ year = Date.today.year
 month = Date.today.month
 
 OptionParser.new do |option|
-    option.on("-y", "--year YEAR", Integer, "Year") { |v| year = v }
-    option.on("-m", "--month MONTH", Integer, "Month") { |v| month = v }
+  option.on("-y", "--year YEAR", Integer, "Year") { |v| year = v }
+  option.on("-m", "--month MONTH", Integer, "Month") { |v| month = v }
 end.parse!
 
 first_day = Date.new(year, month, 1)
@@ -18,12 +18,11 @@ puts "#{month}月 #{year}".center(18)
 puts "日 月 火 水 木 金 土"
 print "   " * first_day.wday
 
-(1..last_day.day).each do |day|
-    print "%2d " % day
-    if (first_day.wday + day) % 7 == 0
-        puts
-    end
+(first_day..last_day).each do |date|
+  print "%2d " % date.day
+  if date.wday == 6
+    puts
+  end
 end
-
 
 puts
