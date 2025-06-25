@@ -19,10 +19,8 @@ puts "日 月 火 水 木 金 土"
 print "   " * first_day.wday
 
 (first_day..last_day).each do |date|
-  print "%2d " % date.day
-  if date.wday == 6
-    puts
-  end
+  print date.day.to_s.rjust(2) + " "
+  puts if date.saturday?
 end
 
 puts
