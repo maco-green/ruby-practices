@@ -1,41 +1,41 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+TOTAL_PINS = 10
 score = ARGV[0]
 scores = score.split(',')
 shots = []
 
 scores.each do |s|
   if s == 'X'
-    shots << 10
+    shots << TOTAL_PINS
     shots << 0
   else
     shots << s.to_i
   end
 end
 
-frames = []
-
-shots.each_slice(2) do |s|
-  frames << s
-end
+frames = shots.each_slice(2).to_a
 
 point = 0
 
 frames.first(9).each_with_index do |frame, index|
-  if frame[0] == 10
+  if frame[0] == TOTAL_PINS
     next_frame = frames[index + 1]
-    if next_frame[0] == 10
+
+    if next_frame[0] == TOTAL_PINS
       next_next_frame = frames[index + 2]
-      bonus = 10 + next_next_frame[0]
+      bonus = next_frame[0] + next_next_frame[0]
     else
       bonus = next_frame.sum
     end
-    point += 10 + bonus
-  elsif frame.sum == 10
+
+    point += TOTAL_PINS + bonus
+
+  elsif frame.sum == TOTAL_PINS
     next_frame = frames[index + 1]
-    bonus = next_frame[0]
-    point += 10 + bonus
+    point += TOTAL_PINS + next_frame[0]
+
   else
     point += frame.sum
   end
