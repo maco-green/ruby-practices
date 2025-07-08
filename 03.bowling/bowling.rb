@@ -20,6 +20,8 @@ frames = shots.each_slice(2).to_a
 point = 0
 
 frames.first(9).each_with_index do |frame, index|
+  bonus = 0
+
   if frame[0] == TOTAL_PINS
     next_frame = frames[index + 1]
 
@@ -30,15 +32,11 @@ frames.first(9).each_with_index do |frame, index|
       bonus = next_frame.sum
     end
 
-    point += TOTAL_PINS + bonus
-
   elsif frame.sum == TOTAL_PINS
-    next_frame = frames[index + 1]
-    point += TOTAL_PINS + next_frame[0]
-
-  else
-    point += frame.sum
+    bonus = frames[index + 1][0]
   end
+
+  point += frame.sum + bonus
 end
 
 point += frames[9..].flatten.sum if frames[9..]
