@@ -1,43 +1,37 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-files = Dir.entries('.').reject { |file| file.start_with?('.') }.sort
-
+files = Dir.glob('*').sort
 return if files.empty?
 
-COLUMN = 3
+COLUMNS = 3
+file_lengths = files.map(&:length)
+max_length = file_lengths.max
+rows = (files.size.to_f / COLUMNS).ceil
 
-lengths = files.map(&:length)
+def to_matrix(file_list, row_count)
+  columns = file_list.each_slice(row_count).to_a
 
-max_length = lengths.max
+  max_rows = columns.map(&:size).max || 0
 
-total_files = files.length
-
-lines = (total_files.to_f / COLUMN).ceil
-
-def format_data(files, lines)
-  columns = files.each_slice(lines).to_a
-
-  max_size = columns.map(&:size).max || 0
-
-  columns.each do |column_array|
-    (max_size - column_array.size).times do
-      column_array << nil
+  columns.each do |column|
+    (max_rows - column.size).times do
+      column << nil
     end
   end
 
   columns.transpose
 end
 
-display_data = format_data(files, lines)
+matrix = to_matrix(files, rows)
 
-def print_data(display_data, max_length)
-  display_data.each do |line_data|
-    line_data.each do |file|
-      printf("%-#{max_length}s  ", file) if file
+def print_matrix(matrix, max_length)
+  matrix.each do |row|
+    row.each do |file|
+      print file.ljust(max_length + 2) if file
     end
     puts
   end
 end
 
-print_data(display_data, max_length)
+print_matrix(matrix, max_length)
