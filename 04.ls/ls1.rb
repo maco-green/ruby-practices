@@ -2,11 +2,15 @@
 # frozen_string_literal: true
 
 def read_files(show_all:)
-  show_all ? Dir.entries('.').sort : Dir.glob('*').sort
+  if show_all
+    Dir.glob('*', File::FNM_DOTMATCH).sort
+  else
+    Dir.glob('*').sort
+  end
 end
 
 show_all = ARGV.include?('-a')
-files = read_files(show_all: show_all)
+files = read_files(show_all:)
 
 return if files.empty?
 
