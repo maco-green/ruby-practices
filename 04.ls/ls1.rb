@@ -1,7 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-files = Dir.glob('*').sort
+def read_files(show_all:)
+  Dir.glob('*', show_all ? File::FNM_DOTMATCH : 0).sort
+end
+
+show_all = ARGV.include?('-a')
+files = read_files(show_all:)
+
 return if files.empty?
 
 COLUMNS = 3
