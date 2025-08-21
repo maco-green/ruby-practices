@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-def read_files(show_all:)
-  Dir.glob('*', show_all ? File::FNM_DOTMATCH : 0).sort
+def read_files(**)
+  Dir.glob('*').sort
 end
 
-show_all = ARGV.include?('-a')
-files = read_files(show_all:)
+reverse_mode = ARGV.include?('-r')
+files = read_files(reverse_mode:)
+files = files.reverse if reverse_mode
 
 return if files.empty?
 
