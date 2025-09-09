@@ -40,7 +40,7 @@ def print_long_format(files)
 
     puts [
       (stat.directory? ? 'd' : '-') + perms.join,
-      stat.nlink.to_s,
+      stat.nlink.to_s.rjust(2),
       Etc.getpwuid(stat.uid).name.ljust(10),
       Etc.getgrgid(stat.gid).name.ljust(6),
       stat.size.to_s.rjust(4),
