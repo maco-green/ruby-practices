@@ -12,23 +12,21 @@ def main
   return if files.empty?
 
   if ARGV.include?('-l')
-    l_format(files)
+    print_long_format(files)
   else
-    normal_format(files)
+    print_normal_format(files)
   end
 end
 
 def permission_string(perm)
-  (perm & 4 != 0 ? 'r' : '-') +
-    (perm & 2 != 0 ? 'w' : '-') +
-    (perm & 1 != 0 ? 'x' : '-')
+  [[4, 'r'], [2, 'w'], [1, 'x']].map { |num, char| perm & num != 0 ? char : '-' }.join
 end
 
 def max_filename_length(files)
   files.map(&:length).max
 end
 
-def l_format(files)
+def print_long_format(files)
   total = files.map { |name| File.stat(name).blocks }.sum
   puts "total #{total}"
 
@@ -36,27 +34,27 @@ def l_format(files)
 
   files.each do |name|
     stat = File.stat(name)
-    type = stat.directory? ? 'd' : '-'
 
     digits = stat.mode.to_s(8)[-3, 3].chars.map(&:to_i)
     perms = digits.map { |d| permission_string(d) }
-    mode = perms.join
 
-    nlink = stat.nlink.to_s.rjust(2)
-    owner = Etc.getpwuid(stat.uid).name.ljust(10)
-    group = Etc.getgrgid(stat.gid).name.ljust(6)
-    size = stat.size.to_s.rjust(4)
-    mtime = stat.mtime.strftime('%_m %e %H:%M')
-
-    puts "#{type}#{mode} #{nlink} #{owner} #{group} #{size}  #{mtime} #{name.ljust(max_length)}"
+    puts [
+      (stat.directory? ? 'd' : '-') + perms.join,
+      stat.nlink.to_s,
+      Etc.getpwuid(stat.uid).name.ljust(10),
+      Etc.getgrgid(stat.gid).name.ljust(6),
+      stat.size.to_s.rjust(4),
+      stat.mtime.strftime('%_m %e %H:%M'),
+      name.ljust(max_length)
+    ].join(' ')
   end
 end
 
 COLUMNS = 3
 
-def normal_format(files)
+def print_normal_format(files)
   max_length = max_filename_length(files)
-  rows = (files.size.to_f / COLUMNS).ceil
+  rows = files.size.ceildiv(COLUMNS)
 
   matrix = to_matrix(files, rows)
   print_matrix(matrix, max_length)
