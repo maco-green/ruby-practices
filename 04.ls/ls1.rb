@@ -14,7 +14,7 @@ def main
   if ARGV.include?('-l')
     print_long_format(files)
   else
-    print_normal_format(files)
+    print_column_format(files)
   end
 end
 
@@ -52,7 +52,7 @@ end
 
 COLUMNS = 3
 
-def print_normal_format(files)
+def print_column_format(files)
   max_length = max_filename_length(files)
   rows = files.size.ceildiv(COLUMNS)
 
