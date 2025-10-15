@@ -2,16 +2,24 @@
 # frozen_string_literal: true
 
 require 'etc'
+require 'optparse'
 
-def read_files
-  Dir.glob('*').sort
+def read_files(show_all:)
+  Dir.glob('*', show_all ? File::FNM_DOTMATCH : 0).sort
 end
 
 def main
-  files = read_files
+  options = ARGV.getopts('arl')
+
+  show_all = options['a']
+  reverse_mode = options['r']
+  long_format = options['l']
+
+  files = read_files(show_all:)
+  files = files.reverse if reverse_mode
   return if files.empty?
 
-  if ARGV.include?('-l')
+  if long_format
     print_long_format(files)
   else
     print_column_format(files)
