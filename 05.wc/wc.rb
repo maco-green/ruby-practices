@@ -19,10 +19,10 @@ def format_record(rec, show_l:, show_w:, show_c:)
 end
 
 opts = { 'l' => false, 'w' => false, 'c' => false }
-OptionParser.new do |o|
-  o.on('-l') { opts['l'] = true }
-  o.on('-w') { opts['w'] = true }
-  o.on('-c') { opts['c'] = true }
+OptionParser.new do |parser|
+  parser.on('-l') { opts['l'] = true }
+  parser.on('-w') { opts['w'] = true }
+  parser.on('-c') { opts['c'] = true }
 end.parse!(ARGV)
 
 if opts.values.none?
@@ -37,7 +37,7 @@ if file_names.empty?
   text = $stdin.read
   results = [count_text(text)]
 else
-  results = file_names.map { |it| count_text(File.read(it), it) }
+  results = file_names.map { |file_name| count_text(File.read(file_name), file_name) }
 
   if file_names.size >= 2
     totals = {
