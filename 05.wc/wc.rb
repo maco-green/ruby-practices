@@ -37,7 +37,7 @@ if file_names.empty?
   text = $stdin.read
   results = [count_text(text)]
 else
-  results = file_names.map { |file_name| count_text(File.read(file_name), file_name) }
+  results = file_names.map { |it| count_text(File.read(it), it) }
 
   if file_names.size >= 2
     totals = {
