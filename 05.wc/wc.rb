@@ -9,26 +9,29 @@ def count_text(text, name = '')
   { name:, lines:, words:, bytes: }
 end
 
-def format_record(rec, show_l:, show_w:, show_c:)
+def format_record(rec, show:)
   cols = []
-  cols << rec[:lines].to_s.rjust(8) if show_l
-  cols << rec[:words].to_s.rjust(8) if show_w
-  cols << rec[:bytes].to_s.rjust(8) if show_c
+
+  show.each do |key, visible|
+    cols << rec[key].to_s.rjust(8) if visible
+  end
+
   cols << rec[:name]
   cols.join(' ')
 end
 
-opts = { 'l' => false, 'w' => false, 'c' => false }
+opts = { lines: false, words: false, bytes: false }
+
 OptionParser.new do |parser|
-  parser.on('-l') { opts['l'] = true }
-  parser.on('-w') { opts['w'] = true }
-  parser.on('-c') { opts['c'] = true }
+  parser.on('-l') { opts[:lines] = true }
+  parser.on('-w') { opts[:words] = true }
+  parser.on('-c') { opts[:bytes] = true }
 end.parse!(ARGV)
 
 if opts.values.none?
-  opts['l'] = true
-  opts['w'] = true
-  opts['c'] = true
+  opts[:lines] = true
+  opts[:words] = true
+  opts[:bytes] = true
 end
 
 file_names = ARGV
@@ -37,7 +40,7 @@ if file_names.empty?
   text = $stdin.read
   results = [count_text(text)]
 else
-  results = file_names.map { |it| count_text(File.read(it), it) }
+  results = file_names.map { count_text(File.read(it), it) }
 
   if file_names.size >= 2
     totals = {
@@ -52,5 +55,5 @@ else
 end
 
 results.each do |rec|
-  puts format_record(rec, show_l: opts['l'], show_w: opts['w'], show_c: opts['c'])
+  puts format_record(rec, show: opts)
 end
