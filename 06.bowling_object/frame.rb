@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require_relative 'shot'
@@ -17,7 +16,7 @@ class Frame
   end
 
   def score
-    @shots.map { |shot| shot.point }.sum
+    @shots.map(&:point).sum
   end
 
   def first_point

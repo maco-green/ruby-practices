@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 class Shot
@@ -7,7 +6,7 @@ class Shot
   end
 
   def point
-    if @mark == "X"
+    if @mark == 'X'
       10
     else
       @mark.to_i
