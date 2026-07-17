@@ -5,7 +5,7 @@ class Shot
     @mark = mark
   end
 
-  def point
+  def pins
     if @mark == 'X'
       10
     else

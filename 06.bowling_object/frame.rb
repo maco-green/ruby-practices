@@ -8,7 +8,7 @@ class Frame
   end
 
   def strike?
-    @shots[0].point == 10
+    @shots[0].pins == 10
   end
 
   def spare?
@@ -16,18 +16,18 @@ class Frame
   end
 
   def score
-    @shots.map(&:point).sum
+    @shots.map(&:pins).sum
   end
 
-  def first_point
-    @shots[0].point
+  def first_pins
+    @shots[0].pins
   end
 
   def shot_size
     @shots.size
   end
 
-  def first_two_points
-    @shots[0].point + @shots[1].point
+  def first_two_pins
+    @shots[0].pins + @shots[1].pins
   end
 end
