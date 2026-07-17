@@ -41,6 +41,3 @@ class Game
     total
   end
 end
-
-game = Game.new(ARGV[0])
-puts game.total_score
