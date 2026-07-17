@@ -27,6 +27,7 @@ class Frame
     @shots.size
   end
 
+  # 2投以上あるフレームで呼ばれる前提(game.rbのtotal_scoreでshot_size == 1のフレームを弾いている)
   def first_two_pins
     @shots[0].pins + @shots[1].pins
   end
