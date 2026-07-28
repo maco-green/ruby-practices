@@ -29,7 +29,7 @@ class Game
                  if frames[index + 1].shot_size == 1
                    frame.score + frames[index + 1].score + frames[index + 2].first_pins
                  else
-                   frame.score + frames[index + 1].first_two_pins
+                   frame.score + frames[index + 1].first_pins + frames[index + 1].second_pins
                  end
                elsif frame.spare?
                  frame.score + frames[index + 1].first_pins
