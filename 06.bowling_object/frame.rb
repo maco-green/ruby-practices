@@ -28,6 +28,6 @@ class Frame
   end
 
   def second_pins
-    @shots[1].pins
+    @shots[1]&.pins
   end
 end
